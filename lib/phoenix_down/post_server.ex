@@ -1,5 +1,6 @@
 defmodule PhoenixDown.PostServer do
   use GenServer
+  use Timex
 
   @post_table :post_table
 
@@ -26,9 +27,15 @@ defmodule PhoenixDown.PostServer do
     |> parse_list
   end
   
-  defp get_post(file) do
+  defp get_post_html(file) do
     {:ok, str} = File.read("web/static/markdown/#{file}")
     Earmark.to_html(str)
+  end
+  
+  defp get_post_date(file) do
+    {:ok, stats} = File.stat("web/static/markdown/#{file}")
+    {:ok, date} = stats.ctime |> formatted_date
+    date
   end
   
   defp read_directory do
@@ -38,9 +45,13 @@ defmodule PhoenixDown.PostServer do
   
   defp parse_list(list) do
     Enum.each list, fn(p) ->
-      :ets.insert @post_table, {Regex.replace(~r/(.md)$/, p, ""), get_post(p)}
+      :ets.insert @post_table, {Regex.replace(~r/(.md)$/, p, ""), get_post_html(p), get_post_date(p)}
     end
     
     :ets.tab2list(@post_table)
+  end
+  
+  defp formatted_date(time) do
+    Date.from(time) |> DateFormat.format("%a, %d %b %Y %H:%M:%S GMT", :strftime)
   end
 end

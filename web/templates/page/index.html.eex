@@ -1,7 +1,8 @@
 <div class="jumbotron">
   
-  <%= for {title, html} <- @posts do %>
-    <h1 align="left"><%= raw title %></h1>
+  <%= for {title, html, date} <- @posts do %>
+    <h1 align="left"><%= title %></h1>
+    <caption><%= date %></caption>
     <%= raw html %>
   <% end %>
 </div>

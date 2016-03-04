@@ -18,7 +18,7 @@ defmodule PhoenixDown.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {PhoenixDown, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext]]
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext, :timex]]
   end
 
   # Specifies which paths to compile per environment.
@@ -34,7 +34,8 @@ defmodule PhoenixDown.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:earmark, "~> 0.1" }
+     {:earmark, "~> 0.1" },
+     {:timex, "1.0.2"}
    ]
   end
 
