@@ -8,12 +8,3 @@ config :phoenix_down, PhoenixDown.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
-
-# Configure your database
-config :phoenix_down, PhoenixDown.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "phoenix_down_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
