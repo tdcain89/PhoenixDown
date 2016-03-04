@@ -17,6 +17,7 @@ defmodule PhoenixDown.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/post", PageController, :detail
   end
 
   # Other scopes may use custom stacks.

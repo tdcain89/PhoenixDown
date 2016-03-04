@@ -21,6 +21,10 @@ defmodule PhoenixDown.PostServer do
   def get do
     GenServer.call(__MODULE__, {:get})
   end
+  
+  def single_post(key_match) do
+    List.first(:ets.lookup(@post_table, key_match))
+  end
 
   def all_posts do
     read_directory
@@ -45,7 +49,8 @@ defmodule PhoenixDown.PostServer do
   
   defp parse_list(list) do
     Enum.each list, fn(p) ->
-      :ets.insert @post_table, {Regex.replace(~r/(.md)$/, p, ""), get_post_html(p), get_post_date(p)}
+      title_key = Regex.replace(~r/(.md)$/, p, "")
+      :ets.insert @post_table, { title_key, title_key |> titleize, get_post_html(p), get_post_date(p)}
     end
     
     :ets.tab2list(@post_table)
@@ -53,5 +58,9 @@ defmodule PhoenixDown.PostServer do
   
   defp formatted_date(time) do
     Date.from(time) |> DateFormat.format("%a, %d %b %Y %H:%M:%S GMT", :strftime)
+  end
+  
+  defp titleize(t) do
+    Regex.replace(~r/_/, t, " ") |> String.capitalize
   end
 end

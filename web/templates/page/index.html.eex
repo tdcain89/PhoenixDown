@@ -1,8 +1,9 @@
 <div class="jumbotron">
   
-  <%= for {title, html, date} <- @posts do %>
+  <%= for {keymaster, title, html, date} <- @posts do %>
     <h1 align="left"><%= title %></h1>
-    <caption><%= date %></caption>
+    <caption><strong><%= date %></strong></caption>
     <%= raw html %>
+    <h5 align="right"><a href="/post?p=<%= keymaster %>">read more</a></h5>
   <% end %>
 </div>

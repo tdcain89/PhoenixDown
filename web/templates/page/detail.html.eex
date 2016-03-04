@@ -1,0 +1,6 @@
+<div class="jumbotron">
+  <h1 align="left"><%= @title %></h1>
+  <caption><strong><%= @date %></strong></caption>
+  <%= raw @html %>
+  <h5 align="right"><a href="/">back</a></h5>
+</div>
