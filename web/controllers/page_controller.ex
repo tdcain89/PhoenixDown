@@ -3,6 +3,10 @@ defmodule PhoenixDown.PageController do
 
   def index(conn, _params) do
     #raise read_directory
-    render conn, "index.html", markdown: PhoenixDown.PostServer.get
+    render conn, "index.html", posts: posts 
+  end
+  
+  defp posts do
+    PhoenixDown.PostServer.get
   end
 end

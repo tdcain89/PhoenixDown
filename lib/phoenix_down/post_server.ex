@@ -1,11 +1,15 @@
 defmodule PhoenixDown.PostServer do
   use GenServer
 
+  @post_table :post_table
+
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, [], [name: __MODULE__] ++ opts)
   end
 
   def init(_) do
+    :ets.new @post_table, [:named_table, :ordered_set,  :protected, read_concurrency: true]
+    
     {:ok, all_posts}
   end
 
@@ -33,6 +37,10 @@ defmodule PhoenixDown.PostServer do
   end
   
   defp parse_list(list) do
-    List.first(list) |> get_post
+    Enum.each list, fn(p) ->
+      :ets.insert @post_table, {Regex.replace(~r/(.md)$/, p, ""), get_post(p)}
+    end
+    
+    :ets.tab2list(@post_table)
   end
 end

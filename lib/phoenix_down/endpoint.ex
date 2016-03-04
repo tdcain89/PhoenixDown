@@ -1,7 +1,7 @@
 defmodule PhoenixDown.Endpoint do
   use Phoenix.Endpoint, otp_app: :phoenix_down
 
-  socket "/socket", PhoenixDown.UserSocket
+  #socket "/socket", PhoenixDown.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
