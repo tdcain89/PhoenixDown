@@ -29,6 +29,8 @@ defmodule PhoenixDown.PostServer do
   def all_posts do
     read_directory
     |> parse_list
+    |> sorty
+    |> reverse
   end
   
   defp get_post_html(file) do
@@ -38,7 +40,7 @@ defmodule PhoenixDown.PostServer do
   
   defp get_post_date(file) do
     {:ok, stats} = File.stat("web/static/markdown/#{file}")
-    {:ok, date} = stats.ctime |> formatted_date
+    {:ok, date} = stats.mtime |> formatted_date
     date
   end
   
@@ -63,4 +65,13 @@ defmodule PhoenixDown.PostServer do
   defp titleize(t) do
     Regex.replace(~r/_/, t, " ") |> String.capitalize
   end
+  
+  defp sorty(list) do
+    List.keysort(list, 3)
+  end
+  
+  # Reverse a list, put these somewhere else?
+  defp foldLeft([], acc, _f), do: acc
+  defp foldLeft([h | t], acc, f), do: foldLeft(t, f.(h, acc), f)
+  defp reverse(l), do: foldLeft(l, [], fn (x, acc) -> [x | acc] end)
 end
