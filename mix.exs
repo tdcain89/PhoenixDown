@@ -9,7 +9,6 @@ defmodule PhoenixDown.Mixfile do
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
      deps: deps]
   end
 
@@ -29,24 +28,13 @@ defmodule PhoenixDown.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.4"},
-     {:phoenix_html, "~> 2.4"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:gettext, "~> 0.9"},
-     {:cowboy, "~> 1.0"},
-     {:earmark, "~> 0.1" },
-     {:timex, "1.0.2"}
+    [{:phoenix, "~> 1.2.0-rc.0"},
+     {:phoenix_html, "~> 2.5.1"},
+     {:phoenix_live_reload, "~> 1.0.4", only: :dev},
+     {:gettext, "~> 0.11.0"},
+     {:cowboy, "~> 1.0.4"},
+     {:earmark, "~> 0.2.1" },
+     {:timex, "2.1.4"}
    ]
-  end
-
-  # Aliases are shortcut or tasks specific to the current project.
-  # For example, to create, migrate and run the seeds file at once:
-  #
-  #     $ mix ecto.setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
-  defp aliases do
-    # ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-    #  "ecto.reset": ["ecto.drop", "ecto.setup"]]
   end
 end

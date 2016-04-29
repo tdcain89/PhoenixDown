@@ -1,7 +1,8 @@
 defmodule PhoenixDown.PostServer do
   use GenServer
-  use Timex
-
+  alias Timex.DateTime
+  alias Timex.Format.DateTime.Formatters.Strftime
+  
   @post_table :post_table
 
   def start_link(opts \\ []) do
@@ -59,7 +60,7 @@ defmodule PhoenixDown.PostServer do
   end
   
   defp formatted_date(time) do
-    Date.from(time) |> DateFormat.format("%a, %d %b %Y %H:%M:%S GMT", :strftime)
+    DateTime.from(time) |> Strftime.format("%a, %d %b %Y %H:%M:%S GMT")
   end
   
   defp titleize(t) do
