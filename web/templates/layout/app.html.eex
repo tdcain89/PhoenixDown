@@ -18,6 +18,7 @@
           <li><a href="http://www.phoenixframework.org/docs">About</a></li>
           <li><a href="http://www.phoenixframework.org/docs">Archive</a></li>
         </ul>
+        <span class="logo"></span>
       </nav>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
