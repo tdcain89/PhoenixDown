@@ -18,11 +18,15 @@ defmodule PhoenixDown.PostServer do
   end
 
   def get do
-    GenServer.call(__MODULE__, {:get})
+    __MODULE__
+    |> GenServer.call({:get})
+    |> PhoenixDown.Post.build
   end
 
   def single_post(key_match) do
-    List.first(:ets.lookup(@post_table, key_match))
+    @post_table
+    |> :ets.lookup(key_match)
+    |> List.first
   end
 
   def all_posts do
@@ -33,18 +37,20 @@ defmodule PhoenixDown.PostServer do
   end
 
   defp get_post_html(file) do
-    {:ok, str} = File.read("web/static/markdown/#{file}")
+    {:ok, str} = File.read("#{markdown_directory()}/#{file}")
     Earmark.as_html!(str)
   end
 
   defp get_post_date(file) do
-    {:ok, stats} = File.stat("web/static/markdown/#{file}", time: :posix)
+    {:ok, stats} = File.stat("#{markdown_directory()}/#{file}", time: :posix)
     fetch_formatted_date_time_from_unix_time(stats.mtime)
   end
 
   defp read_directory do
-    {:ok, list} = File.ls("web/static/markdown")
-    list
+    case File.ls("#{markdown_directory()}") do
+      {:ok, list} -> list
+      {:error, :enoent} -> raise "Markdown Directory not found. Please check your configuration files."
+    end
   end
 
   defp parse_list(list) do
@@ -74,4 +80,8 @@ defmodule PhoenixDown.PostServer do
   defp foldLeft([], acc, _f), do: acc
   defp foldLeft([h | t], acc, f), do: foldLeft(t, f.(h, acc), f)
   defp reverse(l), do: foldLeft(l, [], fn (x, acc) -> [x | acc] end)
+
+  defp markdown_directory do
+    Application.get_env(:phoenix_down, :markdown_directory)
+  end
 end
