@@ -27,6 +27,7 @@ defmodule PhoenixDown.PostServer do
     @post_table
     |> :ets.lookup(key_match)
     |> List.first
+    |> PhoenixDown.Post.build
   end
 
   def all_posts do
