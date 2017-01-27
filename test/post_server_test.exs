@@ -10,7 +10,7 @@ defmodule PhoenixDown.PostServerTest do
   end
 
   test """
-  get/0 grabs existing markdown files and reads them into %Post{} structs
+  get/0 grabs existing markdown files and reads them into %PhoenixDown.Post{} structs
   """ do
     posts = PostServer.get
     [first_post|_] = posts
@@ -29,5 +29,15 @@ defmodule PhoenixDown.PostServerTest do
     assert_raise RuntimeError, "Markdown Directory not found. Please check your configuration files.", fn ->
       PostServer.get
     end
+  end
+
+  test """
+  single_post/1 returns a single %PhoenixDown.Post{} struct given an existing `id`
+  """ do
+    posts = PostServer.get
+    [first_post|_] = posts
+
+    found_post = PostServer.single_post(first_post.key)
+    refute is_nil(found_post.title)
   end
 end

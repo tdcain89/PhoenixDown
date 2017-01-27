@@ -30,7 +30,7 @@ defmodule PhoenixDown.PostServer do
     |> PhoenixDown.Post.build
   end
 
-  def all_posts do
+  defp all_posts do
     read_directory()
     |> parse_list
     |> sorty
