@@ -20,4 +20,11 @@ defmodule PhoenixDown.PostTest do
     post_structs = Post.build(posts)
     assert Enum.count(post_structs) == 2
   end
+
+  test """
+  build/1 returns single struct when given a tuple
+  """ do
+    post = Post.build({"post", "Post", "Test test test", nil, "James"})
+    refute is_nil(post.title)
+  end
 end
