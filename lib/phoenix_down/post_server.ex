@@ -56,8 +56,10 @@ defmodule PhoenixDown.PostServer do
 
   defp parse_list(list) do
     Enum.each list, fn(p) ->
-      title_key = Regex.replace(~r/(.md)$/, p, "")
-      :ets.insert @post_table, { title_key, title_key |> titleize, get_post_html(p), get_post_date(p)}
+      file_name = Regex.replace(~r/(.md)$/, p, "")
+      [title_key|meta] = String.split(file_name, ".")
+      [author] = meta
+      :ets.insert @post_table, { title_key, title_key |> titleize, get_post_html(p), get_post_date(p), String.capitalize(author) }
     end
 
     :ets.tab2list(@post_table)

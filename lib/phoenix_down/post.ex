@@ -6,14 +6,16 @@ defmodule PhoenixDown.Post do
     key: String.t,
     title: String.t,
     html: String.t,
-    posted_at: Calendar.DateTime.t
+    posted_at: Calendar.DateTime.t,
+    author: String.t
   }
 
   defstruct [
     key: nil,
     title: nil,
     html: nil,
-    posted_at: nil
+    posted_at: nil,
+    author: nil
   ]
 
   @spec build(List.t) :: list(t)
@@ -21,15 +23,16 @@ defmodule PhoenixDown.Post do
   """
   def build(posts) when is_list(posts), do: wrap_each(posts)
 
-  @spec build({String.t, String.t, String.t, Calendar.DateTime.t}) :: t
+  @spec build({String.t, String.t, String.t, Calendar.DateTime.t, String.t}) :: t
   @doc """
   """
-  def build({key, title, html, datetime}) do
+  def build({key, title, html, datetime, author}) do
     %__MODULE__{
       key: key,
       title: title,
       html: html,
-      posted_at: datetime
+      posted_at: datetime,
+      author: author
     }
   end
 

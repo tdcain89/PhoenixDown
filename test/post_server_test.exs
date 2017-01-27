@@ -19,6 +19,7 @@ defmodule PhoenixDown.PostServerTest do
     refute is_nil(first_post.posted_at)
     refute is_nil(first_post.title)
     refute is_nil(first_post.key)
+    assert first_post.author == "Larry"
   end
 
   @tag :skip
