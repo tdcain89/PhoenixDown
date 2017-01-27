@@ -58,8 +58,9 @@ defmodule PhoenixDown.PostServer do
     Enum.each list, fn(p) ->
       file_name = Regex.replace(~r/(.md)$/, p, "")
       [title_key|meta] = String.split(file_name, ".")
-      [author] = meta
-      :ets.insert @post_table, { title_key, title_key |> titleize, get_post_html(p), get_post_date(p), String.capitalize(author) }
+      author = meta |> List.first |> titleize
+
+      :ets.insert @post_table, { title_key, title_key |> titleize, get_post_html(p), get_post_date(p), author }
     end
 
     :ets.tab2list(@post_table)
@@ -72,7 +73,11 @@ defmodule PhoenixDown.PostServer do
   end
 
   defp titleize(t) do
-    Regex.replace(~r/_/, t, " ") |> String.capitalize
+    ~r/_/
+    |> Regex.replace(t, " ")
+    |> String.split(" ")
+    |> Enum.map(&(String.capitalize(&1)))
+    |> Enum.join(" ")
   end
 
   defp sorty(list) do

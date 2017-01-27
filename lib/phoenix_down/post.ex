@@ -26,6 +26,7 @@ defmodule PhoenixDown.Post do
   @spec build({String.t, String.t, String.t, Calendar.DateTime.t, String.t}) :: t
   @doc """
   """
+  def build(nil), do: %__MODULE__{}
   def build({key, title, html, datetime, author}) do
     %__MODULE__{
       key: key,
