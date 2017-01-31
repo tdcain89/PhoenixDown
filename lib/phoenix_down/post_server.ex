@@ -39,7 +39,11 @@ defmodule PhoenixDown.PostServer do
 
   defp get_post_html(file) do
     {:ok, str} = File.read("#{markdown_directory()}/#{file}")
-    Earmark.as_html!(str)
+    case String.split(str, "<end_meta>") do
+      [meta, remaining_str] -> {YamlElixir.read_from_string(meta), Earmark.as_html!(remaining_str)}
+      [remaining_str]       -> {%{}, Earmark.as_html!(remaining_str)}
+      _                     -> {%{}, nil}
+    end
   end
 
   defp get_post_date(file) do
@@ -56,11 +60,13 @@ defmodule PhoenixDown.PostServer do
 
   defp parse_list(list) do
     Enum.each list, fn(p) ->
+      {meta_data, html} = get_post_html(p)
+      
       file_name = Regex.replace(~r/(.md)$/, p, "")
       [title_key|meta] = String.split(file_name, ".")
       author = meta |> List.first |> titleize
 
-      :ets.insert @post_table, { title_key, title_key |> titleize, get_post_html(p), get_post_date(p), author }
+      :ets.insert @post_table, { title_key, title_key |> titleize, html, get_post_date(p), author, meta_data}
     end
 
     :ets.tab2list(@post_table)

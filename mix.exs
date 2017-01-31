@@ -15,13 +15,14 @@ defmodule PhoenixDown.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger, :earmark, :calendar]]
+    [extra_applications: [:logger, :earmark, :calendar, :yaml_elixir]]
   end
 
   defp deps do
     [
       {:earmark, "~> 1.1.0" },
-      {:calendar, "~> 0.17.1"}
+      {:calendar, "~> 0.17.1"},
+      {:yaml_elixir, "~> 1.3"}
     ]
   end
 end

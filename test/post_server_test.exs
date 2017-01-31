@@ -19,11 +19,11 @@ defmodule PhoenixDown.PostServerTest do
   """, %{posts: posts} do
     [first_post|_] = posts
     assert Enum.count(posts) == 2
-    assert first_post.html =~ "Test Markdown file"
+    assert first_post.html =~ "Testing test test"
     refute is_nil(first_post.posted_at)
     refute is_nil(first_post.title)
     refute is_nil(first_post.key)
-    assert first_post.author == "Larry"
+    assert first_post.author == "Test Author"
   end
 
   test """
@@ -40,8 +40,17 @@ defmodule PhoenixDown.PostServerTest do
   """, %{posts: _posts} do
     post = PostServer.single_post("another_test")
 
-    assert post.author == "Larry King"
-    assert post.title == "Another Test"
+    assert post.author == "Test Author"
+    assert post.title == "Test Title"
+  end
+  
+  test """
+  MD file without meta info still parses
+  """, %{posts: _posts} do
+    post = PostServer.single_post("test")
+
+    assert post.author == "Larry"
+    assert post.title == "Test"
   end
 
   @tag :skip
