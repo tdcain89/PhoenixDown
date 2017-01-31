@@ -48,7 +48,7 @@ defmodule PhoenixDown.PostServer do
 
   defp get_post_date(file) do
     {:ok, stats} = File.stat("#{markdown_directory()}/#{file}", time: :posix)
-    fetch_formatted_date_time_from_unix_time(stats.mtime)
+    stats.mtime
   end
 
   defp read_directory do
@@ -70,12 +70,6 @@ defmodule PhoenixDown.PostServer do
     end
 
     :ets.tab2list(@post_table)
-  end
-
-  defp fetch_formatted_date_time_from_unix_time(unix_time) do
-    unix_time
-    |> Calendar.DateTime.Parse.unix!
-    |> Calendar.Strftime.strftime!("%a, %d %b %Y %H:%M:%S")
   end
 
   defp titleize(t) do
