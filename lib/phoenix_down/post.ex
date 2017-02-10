@@ -8,7 +8,7 @@ defmodule PhoenixDown.Post do
     html: String.t,
     posted_at: Calendar.DateTime.t,
     author: String.t,
-    tags: List.t,
+    tags: list,
     friendly_url: String.t
   }
 
@@ -22,7 +22,7 @@ defmodule PhoenixDown.Post do
     friendly_url: nil
   ]
 
-  @spec build(List.t) :: list(t)
+  @spec build(list) :: list(t)
   @doc """
   """
   def build(posts) when is_list(posts), do: wrap_each(posts)
@@ -45,10 +45,12 @@ defmodule PhoenixDown.Post do
     }
   end
 
+  @spec wrap_each(list) :: list(t)
   defp wrap_each(elements) do
     elements |> Enum.map(&(__MODULE__.build(&1)))
   end
-  
+
+  @spec parse_meta_data(map) :: tuple
   defp parse_meta_data(meta_data) do
     {
       meta_data["meta"]["title"],
@@ -56,10 +58,11 @@ defmodule PhoenixDown.Post do
       String.split(meta_data["meta"]["tags"] || "", ",")
     }
   end
-  
+
+  @spec create_friendly_url(String.t, pos_integer) :: String.t
   def create_friendly_url(post_key, unix_time) do
     frienly_date = unix_time |> Calendar.DateTime.Parse.unix! |> Calendar.Strftime.strftime!("/%Y/%m/%d")
     friendly_key = String.replace(post_key, "_", "-")
-    "#{frienly_date}/#{friendly_key}" 
+    "#{frienly_date}/#{friendly_key}"
   end
 end

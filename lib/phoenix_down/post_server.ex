@@ -8,7 +8,7 @@ defmodule PhoenixDown.PostServer do
   end
 
   def init(_) do
-    :ets.new @post_table, [:named_table, :ordered_set,  :protected, read_concurrency: true]
+    :ets.new @post_table, [:named_table, :ordered_set, :protected, read_concurrency: true]
 
     {:ok, all_posts()}
   end
@@ -61,7 +61,7 @@ defmodule PhoenixDown.PostServer do
   defp parse_list(list) do
     Enum.each list, fn(p) ->
       {meta_data, html} = get_post_html(p)
-      
+
       file_name = Regex.replace(~r/(.md)$/, p, "")
       [title_key|meta] = String.split(file_name, ".")
       author = meta |> List.first |> titleize
